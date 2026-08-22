@@ -11,6 +11,9 @@ import { Component, Prop, Event, EventEmitter, h } from '@stencil/core';
   styleUrl: 'category-filter.css',
   shadow: true,
 })
+
+//Defines the CategoryFilter component, which renders a row of selectable chips for filtering categories. It accepts an array of category labels and an active category, and emits an event when a different chip is selected.
+
 export class CategoryFilter {
   /** Available category labels to render as chips. */
   @Prop() categories: string[] = [];
@@ -29,6 +32,7 @@ export class CategoryFilter {
     const all = ['', ...this.categories];
     return (
       <div class="filter" role="tablist">
+
         {all.map(cat => (
           <button
             type="button"
@@ -40,6 +44,7 @@ export class CategoryFilter {
             {cat === '' ? 'All' : cat}
           </button>
         ))}
+        
       </div>
     );
   }
