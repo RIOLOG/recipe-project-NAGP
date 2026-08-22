@@ -1,0 +1,28 @@
+:host {
+  display: inline-block;
+  font-family: var(--ruk-font-family, system-ui, sans-serif);
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge--easy {
+  background: var(--ruk-badge-easy-bg, #e3f6e8);
+  color: var(--ruk-badge-easy-color, #1e7d3c);
+}
+
+.badge--medium {
+  background: var(--ruk-badge-medium-bg, #fff3d9);
+  color: var(--ruk-badge-medium-color, #9a6a00);
+}
+
+.badge--hard {
+  background: var(--ruk-badge-hard-bg, #fde3e3);
+  color: var(--ruk-badge-hard-color, #b3261e);
+}

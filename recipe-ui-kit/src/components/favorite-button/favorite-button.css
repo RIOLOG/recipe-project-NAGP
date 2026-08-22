@@ -1,0 +1,43 @@
+:host {
+  display: inline-block;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--ruk-fav-bg, rgba(255, 255, 255, 0.9));
+  cursor: pointer;
+  padding: 6px;
+  transition: transform 0.1s ease;
+}
+
+.btn:active {
+  transform: scale(0.9);
+}
+
+.btn--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.btn--lg {
+  width: 48px;
+  height: 48px;
+}
+
+.icon {
+  width: 60%;
+  height: 60%;
+  fill: none;
+  stroke: var(--ruk-fav-color, #888);
+  stroke-width: 2;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+.btn--active .icon {
+  fill: var(--ruk-fav-color-active, #e0245e);
+  stroke: var(--ruk-fav-color-active, #e0245e);
+}

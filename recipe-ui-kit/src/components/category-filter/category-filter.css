@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  font-family: var(--ruk-font-family, system-ui, sans-serif);
+}
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--ruk-border-color, #ddd);
+  background: var(--ruk-chip-bg, #fff);
+  color: var(--ruk-text-color, #333);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.chip--active {
+  background: var(--ruk-accent-color, #4a6fff);
+  border-color: var(--ruk-accent-color, #4a6fff);
+  color: #fff;
+}
