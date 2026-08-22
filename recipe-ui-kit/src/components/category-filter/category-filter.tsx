@@ -28,6 +28,7 @@ export class CategoryFilter {
     this.filterChange.emit({ category });
   }
 
+  // Renders the component's UI, including a button for each category and an "All" button. The active category is highlighted, and clicking a button emits a filterChange event with the selected category.
   render() {
     const all = ['', ...this.categories];
     return (
