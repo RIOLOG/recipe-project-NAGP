@@ -2,11 +2,14 @@
 	import { mealPlan, DAYS, type DayOfWeek } from '$lib/stores/mealPlan.svelte';
 	import { searchMeals } from '$lib/api/mealdb';
 	import type { MealSummary } from '$lib/api/mealdb';
+	import { userRecipes } from '$lib/stores/userRecipes.svelte';
 
 	let pickerOpenFor = $state<DayOfWeek | null>(null);
 	let pickerQuery = $state('');
 	let pickerResults = $state<MealSummary[]>([]);
 	let pickerLoading = $state(false);
+	let pickerUserResults = $state<typeof userRecipes.list>([]);
+	let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
 	function openPicker(day: DayOfWeek) {
 		pickerOpenFor = day;
@@ -21,11 +24,16 @@
 	async function runPickerSearch() {
 		if (!pickerQuery.trim()) {
 			pickerResults = [];
+			pickerUserResults = [];
 			return;
 		}
 		pickerLoading = true;
 		try {
+			const q = pickerQuery.toLowerCase();
 			pickerResults = await searchMeals(pickerQuery);
+			pickerUserResults = userRecipes.list.filter(
+				(r) => r.title.toLowerCase().includes(q) || r.category.toLowerCase().includes(q)
+			);
 		} finally {
 			pickerLoading = false;
 		}
@@ -39,25 +47,22 @@
 	}
 </script>
 
-<a href="/">← Back to recipes</a>
+<a href="/" class="back-link">← Back to recipes</a>
 <h1>Weekly Meal Planner</h1>
 
 <div class="week-grid">
 	{#each DAYS as day}
-		<div class="slot">
-			<div class="slot__day">{day}</div>
-			{#if mealPlan.plan[day]}
-				<div class="slot__filled">
-					<img src={mealPlan.plan[day]?.image} alt={mealPlan.plan[day]?.title} />
-					<span class="slot__title">{mealPlan.plan[day]?.title}</span>
-					<button class="slot__remove" onclick={() => mealPlan.remove(day)} aria-label="Remove">×</button>
-				</div>
-			{:else}
-				<button class="slot__empty" onclick={() => openPicker(day)}>+ Add recipe</button>
-			{/if}
-		</div>
+		<meal-plan-slot
+			day={day}
+			assignedRecipe={mealPlan.plan[day]}
+			onslotAssignRequest={(e: CustomEvent<{ day: string }>) => openPicker(e.detail.day as DayOfWeek)}
+			onslotRemove={(e: CustomEvent<{ day: string; recipeId: string }>) =>
+				mealPlan.remove(e.detail.day as DayOfWeek)}
+		></meal-plan-slot>
 	{/each}
 </div>
+
+
 
 {#if pickerOpenFor}
 	<div class="picker-overlay" onclick={closePicker}>
@@ -69,24 +74,40 @@
 					runPickerSearch();
 				}}
 			>
-				<input type="search" placeholder="Search recipes…" bind:value={pickerQuery} autofocus />
+				<input
+					type="search"
+					placeholder="Search recipes…"
+					bind:value={pickerQuery}
+					oninput={() => {
+						if (debounceTimer) clearTimeout(debounceTimer);
+						debounceTimer = setTimeout(() => runPickerSearch(), 350);
+					}}
+					autofocus
+				/>
 				<button type="submit">Search</button>
+				
 			</form>
 
-			{#if pickerLoading}
-				<p>Searching…</p>
-			{:else if pickerResults.length > 0}
-				<div class="picker__results">
-					{#each pickerResults as meal (meal.id)}
-						<button class="picker__result" onclick={() => assignMeal(meal)}>
-							<img src={meal.image} alt={meal.title} />
-							<span>{meal.title}</span>
-						</button>
-					{/each}
-				</div>
-			{:else if pickerQuery.trim()}
-				<p>No results. Try another search.</p>
-			{/if}
+		{#if pickerLoading}
+			<p>Searching…</p>
+		{:else if pickerResults.length > 0 || pickerUserResults.length > 0}
+			<div class="picker__results">
+				{#each pickerUserResults as recipe (recipe.id)}
+					<button class="picker__result" onclick={() => assignMeal(recipe)}>
+						<img src={recipe.image} alt={recipe.title} />
+						<span>{recipe.title} (yours)</span>
+					</button>
+				{/each}
+				{#each pickerResults as meal (meal.id)}
+					<button class="picker__result" onclick={() => assignMeal(meal)}>
+						<img src={meal.image} alt={meal.title} />
+						<span>{meal.title}</span>
+					</button>
+				{/each}
+			</div>
+		{:else if pickerQuery.trim()}
+			<p>No results. Try another search.</p>
+		{/if}
 
 			<button class="picker__close" onclick={closePicker}>Cancel</button>
 		</div>

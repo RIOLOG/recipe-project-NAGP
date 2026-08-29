@@ -7,7 +7,7 @@
 	}
 </script>
 
-<a href="/">← Back to recipes</a>
+<a href="/" class="back-link">← Back to recipes</a>
 <h1>My Favorites</h1>
 
 {#if favorites.list.length === 0}
