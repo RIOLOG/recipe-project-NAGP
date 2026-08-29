@@ -3,6 +3,8 @@ import { getMealById } from '$lib/api/mealdb';
 import { userRecipes } from '$lib/stores/userRecipes.svelte';
 import { error } from '@sveltejs/kit';
 
+export const ssr = false;
+
 export const load: PageLoad = async ({ params }) => {
 	// User-created recipes are prefixed with 'user-' (see generateId() in
 	// userRecipes.svelte.ts) — check that first since it's a local lookup,

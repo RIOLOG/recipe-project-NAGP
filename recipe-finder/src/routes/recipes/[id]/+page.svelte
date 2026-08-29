@@ -19,14 +19,28 @@
 
 </script>
 
-<a href="/">← Back to recipes</a>
+<a href="/" class="back-link">← Back to recipes</a>
 
 <div class="detail">
 	<img src={meal.image} alt={meal.title} />
 
 	<div class="info">
+
 		<div class="header">
+		<div class="title-row">
 			<h1>{meal.title}</h1>
+			<favorite-button
+				size="lg"
+				active={favorites.isFavorite(meal.id)}
+				onfavoriteToggle={() =>
+					favorites.toggle({
+						id: meal.id,
+						title: meal.title,
+						image: meal.image,
+						category: meal.category
+					})}
+			></favorite-button>
+		</div>
 			{#if data.isUserCreated}
 				<div class="owner-actions">
 					<a href="/recipes/{meal.id}/edit" class="btn">Edit</a>
@@ -44,14 +58,8 @@
 		</div>
 
 		<h2>Ingredients</h2>
-		<ul class="ingredients">
-			{#each meal.ingredients as ing}
-				<li>
-					{#if ing.quantity}<strong>{ing.quantity}</strong>{/if}
-					{ing.name}
-				</li>
-			{/each}
-		</ul>
+
+			<ingredient-list ingredients={meal.ingredients}></ingredient-list>
 
 		<h2>Instructions</h2>
 		<p class="instructions">{meal.instructions}</p>
@@ -131,5 +139,10 @@
 	.instructions {
 		white-space: pre-line;
 		line-height: 1.6;
+	}
+	.title-row {
+		display: flex;
+		align-items: center;
+		gap: 10px;
 	}
 </style>
