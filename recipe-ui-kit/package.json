@@ -1,6 +1,6 @@
 {
   "name": "@riolog/recipe-ui-kit",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "Framework-agnostic Stencil web component library (recipe cards, forms, meal-planner slots, etc.) built for the Recipe Finder & Meal Planner SvelteKit app.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -13,6 +13,14 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/recipe-ui-kit/recipe-ui-kit.esm.js",
       "require": "./dist/recipe-ui-kit/recipe-ui-kit.cjs.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./components/*.js": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js"
     },
     "./loader": {
       "import": "./loader/index.js",
@@ -55,8 +63,5 @@
     "playwright": "^1.52.0",
     "vitest": "^4.0.0"
   },
-  "license": "MIT",
-  "dependencies": {
-    "@riolog/recipe-ui-kit": "^0.1.0"
-  }
+  "license": "MIT"
 }
