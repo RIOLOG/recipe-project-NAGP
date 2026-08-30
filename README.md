@@ -78,7 +78,7 @@ All components are Shadow DOM–encapsulated and themeable via `--ruk-*` CSS cus
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/riolog/recipe-project.git
+git clone [https://github.com/riolog/recipe-project.git](https://github.com/RIOLOG/recipe-project-NAGP.git)
 cd recipe-project
 ```
 
